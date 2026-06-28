@@ -15,7 +15,7 @@ const notoSansJp = Noto_Sans_JP({
   weight: ['400', '700', '900'],
   variable: '--font-ja',
   display: 'swap',
-  preload: false, // ★プリロードを無効化する
+  preload: false, // ← これが重要
 });
 
 export const metadata: Metadata = {
