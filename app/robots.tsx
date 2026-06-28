@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://YOUR_DOMAIN';
+  const baseUrl = 'https://rindo-official.vercel.app/'; // ※本番ドメインに書き換えてください
 
   return {
     rules: {
@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
     },
     sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    // host プロパティはNext.jsの最新仕様では非推奨（または無視）とされるため、削除しても問題ありません
   };
 }
