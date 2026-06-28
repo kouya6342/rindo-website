@@ -9,8 +9,8 @@ import ClientPage from './ClientPage';
 const SITE_CONFIG = {
   title: '合同会社RINDO | FOOD × STREET × CULTURE',
   description: '大阪、関西を拠点に、キッチンカー出店（どて焼きまぜそば）、ストリートアパレル企画（IIIstar’s）、イベントコラボを行うクリエイティブカンパニー。',
-  url: 'https://rindo-official.vercel.app/', // 本番URLが決定したら書き換えてください
-  ogpImage: 'https://rindo-official.vercel.app/ogp.jpg',
+  url: 'https://rindo-official.com', // 本番URLが決定したら書き換えてください
+  ogpImage: 'https://rindo-official.com',
   company: {
     name: '合同会社RINDO',
     tel: '090-7965-9611',

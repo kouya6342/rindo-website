@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://rindo-official.vercel.app/'; // ※本番ドメインに書き換えてください
+  const baseUrl = 'https://rindo-official.com'; // ※本番ドメインに書き換えてください
 
   return [
     {
