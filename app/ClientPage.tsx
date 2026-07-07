@@ -33,14 +33,6 @@ export default function ClientPage() {
               <a href={`#${SECTIONS.contact.id}`} className="btn btn-accent">
                 {SECTIONS.contact.label}
               </a>
-              <a
-                href={SITE_CONFIG.links.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-instagram"
-              >
-                INSTAGRAM
-              </a>
             </div>
           </div>
         </section>
@@ -134,9 +126,12 @@ export default function ClientPage() {
                     <li key={i}>{point}</li>
                   ))}
                 </ul>
-                <div>
-                  <a href={`#${SECTIONS.contact.id}`} className="btn">
+                <div className="flex-buttons" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <a href={`#${SECTIONS.contact.id}`} className="btn btn-accent">
                     出店依頼はこちら
+                  </a>
+                  <a href={SITE_CONFIG.links.kitchenCar} target="_blank" rel="noopener noreferrer" className="btn btn-instagram">
+                    RINDO FOOD STREET公式
                   </a>
                 </div>
               </div>
@@ -171,12 +166,12 @@ export default function ClientPage() {
                   ))}
                 </ul>
                 
-                <div className="hero-buttons mt-2">
+                <div className="flex-buttons mt-2">
                   <a href={SITE_CONFIG.links.onlineStore} target="_blank" rel="noopener noreferrer" className="btn btn-accent">
                     ONLINE STORE
                   </a>
-                  <a href={SITE_CONFIG.links.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-instagram">
-                    INSTAGRAM
+                  <a href={SITE_CONFIG.links.apparel} target="_blank" rel="noopener noreferrer" className="btn btn-instagram">
+                    IIIstar's公式
                   </a>
                 </div>
               </div>
@@ -323,8 +318,9 @@ export default function ClientPage() {
             <div>
               <h4 className="footer-title">SNS / LINK</h4>
               <div className="footer-links">
-                <p><a href={SITE_CONFIG.links.onlineStore} target="_blank" rel="noopener noreferrer">ONLINESTORE</a></p>
-                <p><a href={SITE_CONFIG.links.instagram} target="_blank" rel="noopener noreferrer">INSTAGRAM</a></p>
+                <p><a href={SITE_CONFIG.links.kitchenCar} target="_blank" rel="noopener noreferrer">RINDO FOOD STREET公式</a></p>
+                <p><a href={SITE_CONFIG.links.apparel} target="_blank" rel="noopener noreferrer">IIIstar's公式</a></p>
+                <p><a href={SITE_CONFIG.links.onlineStore} target="_blank" rel="noopener noreferrer">ONLINESTORE</a></p>               
                 <p><a href={`#${SECTIONS.news.id}`}>{SECTIONS.news.label}</a></p>
                 <p><a href={`#${SECTIONS.contact.id}`}>{SECTIONS.contact.label}</a></p>
               </div>

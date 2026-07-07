@@ -20,10 +20,11 @@ const SITE_CONFIG = {
     locality: '大阪市港区',
     street: '磯路3-26-3',
   },
-  sns: [
-    'https://www.instagram.com/iii_stars20240303?igsh=Y29nOXJsdDEzMHZs',
-    'https://iiistars20240303.paintory.com/',
-  ]
+  sns: {
+  kitchenCar: 'https://www.instagram.com/rindo_food.street/',
+  apparel: 'https://www.instagram.com/iii_stars20240303/',
+  apparelStore: 'https://iiistars20240303.paintory.com/',
+  },
 };
 
 // ==========================================
@@ -79,7 +80,11 @@ const localBusinessJsonLd: WithContext<LocalBusiness> = {
       closes: '19:00',
     },
   ],
-  sameAs: SITE_CONFIG.sns,
+  sameAs: [
+  SITE_CONFIG.sns.kitchenCar,
+  SITE_CONFIG.sns.apparel,
+  SITE_CONFIG.sns.apparelStore,
+],
 };
 
 // ==========================================

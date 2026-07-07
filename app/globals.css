@@ -762,3 +762,14 @@ textarea:focus {
     text-decoration: underline;
   }
 }
+.flex-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ボタンの余白をリセット（調整が必要な場合） */
+.flex-buttons .btn {
+    margin: 0;
+}

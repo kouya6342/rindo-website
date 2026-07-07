@@ -21,7 +21,8 @@ export const SITE_CONFIG = {
 
   // SNS・外部ストアURL
   links: {
-    instagram: 'https://www.instagram.com/iii_stars20240303?igsh=Y29nOXJsdDEzMHZs',
+    kitchenCar: 'https://www.instagram.com/rindo_food.street/',
+    apparel: 'https://www.instagram.com/iii_stars20240303?igsh=Y29nOXJsdDEzMHZs',
     onlineStore: 'https://iiistars20240303.paintory.com/',
   },
 
