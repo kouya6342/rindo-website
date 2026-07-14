@@ -20,7 +20,7 @@ const notoSansJp = Noto_Sans_JP({
 
 export const metadata: Metadata = {
   // ※ 本番ドメインが決まったら必ず書き換えてください
-  metadataBase: new URL('https://rindo-official.vercel.app/'), 
+  metadataBase: new URL('https://rindo-official.com/'), 
   title: '大阪のキッチンカー出店・アパレル企画なら合同会社RINDO | 心斎橋拠点',
   description:
     '合同会社RINDOは大阪、関西を拠点に、どて焼きまぜそばのキッチンカー出店、ストリートアパレル企画、イベントコラボを行うクリエイティブカンパニーです。関西一円のイベント出店依頼に対応。',
