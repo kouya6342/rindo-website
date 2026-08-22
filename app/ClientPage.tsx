@@ -18,7 +18,6 @@ const newsItems = [
       'この機会に、ぜひ会場へお越しください！',
     ],
     overview: {
-      title: '# 大阪YATAIフェス2026 出店概要',
       items: [
         ['開催期間', '2026年9月18日（金）～9月23日（水・祝）'],
         ['営業時間', '11:00～21:00'],
@@ -54,6 +53,7 @@ export default function ClientPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showNewsToast, setShowNewsToast] = useState(false);
   const [isNewsEnded, setIsNewsEnded] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const toastState = getToastState(NEWS_TOAST.startDate, NEWS_TOAST.endDate);
@@ -104,10 +104,23 @@ export default function ClientPage() {
 
       <header>
         <div className="header-inner">
+          <button
+            type="button"
+            className="mobile-menu-button"
+            aria-label={isMobileMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
+            aria-expanded={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <span className="mobile-menu-icon" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
           <div className="logo">RINDO</div>
-          <nav className="nav-links" aria-label="グローバルナビゲーション">
+          <nav className={`nav-links${isMobileMenuOpen ? ' is-open' : ''}`} aria-label="グローバルナビゲーション">
             {SITE_CONFIG.navigation.map((item) => (
-              <a key={item.id} href={`#${item.id}`}>
+              <a key={item.id} href={`#${item.id}`} onClick={() => setIsMobileMenuOpen(false)}>
                 {item.label}
               </a>
             ))}
@@ -224,7 +237,7 @@ export default function ClientPage() {
                     出店依頼はこちら
                   </a>
                   <a href={SITE_CONFIG.links.kitchenCar} target="_blank" rel="noopener noreferrer" className="btn btn-instagram">
-                    RINDO FOOD STREET公式
+                    RINDO FOOD STREET
                   </a>
                 </div>
               </div>
@@ -232,8 +245,7 @@ export default function ClientPage() {
                 <img 
                     src="/food1.jpg" 
                     alt="どて焼きまぜそば" 
-                    className="business-img"
-                    style={{ width: '80%', borderRadius: '8px', objectFit: 'cover' }}
+                  className="business-img"
                 />
                 </div>
             </div>
@@ -346,7 +358,6 @@ export default function ClientPage() {
                             ))}
 
                             <div className="news-overview">
-                              <h4>{item.overview.title}</h4>
                               <div className="news-overview-layout">
                                 <dl className="news-overview-list">
                                   {item.overview.items.map((entry) => {
@@ -377,6 +388,19 @@ export default function ClientPage() {
                                       </div>
                                     );
                                   })}
+                                  <div className="news-overview-row">
+                                    <dt>Instagram</dt>
+                                    <dd>
+                                      <a
+                                        href={SITE_CONFIG.links.kitchenCar}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="news-map-link news-instagram-link"
+                                      >
+                                        RINDO FOOD STREET
+                                      </a>
+                                    </dd>
+                                  </div>
                                 </dl>
 
                                 <div className="news-overview-image-wrap">
