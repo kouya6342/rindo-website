@@ -29,17 +29,46 @@ const newsItems = [
   },
 ];
 const galleryItems = [];
+const NEWS_TOAST = {
+  startDate: '2026-08-22T00:00:00+09:00',
+  endDate: '2026-09-24T00:00:00+09:00',
+  label: '大阪屋台フェス出店決定！',
+  endedLabel: '終了しました',
+};
+
+const getCurrentDate = () => {
+  return new Date();
+};
+
+const getToastState = (startDate: string, endDate: string) => {
+  const now = getCurrentDate();
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (now < start) return 'upcoming';
+  if (now < end) return 'active';
+  return 'ended';
+};
 
 export default function ClientPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showNewsToast, setShowNewsToast] = useState(false);
+  const [isNewsEnded, setIsNewsEnded] = useState(false);
 
   useEffect(() => {
+    const toastState = getToastState(NEWS_TOAST.startDate, NEWS_TOAST.endDate);
+    setIsNewsEnded(toastState === 'ended');
+
+    if (toastState === 'upcoming' || toastState === 'ended') {
+      setShowNewsToast(false);
+      return;
+    }
+
+    setShowNewsToast(true);
+
     const timer = window.setTimeout(() => {
       setShowNewsToast(false);
     }, 7000);
-
-    setShowNewsToast(true);
 
     return () => window.clearTimeout(timer);
   }, []);
@@ -54,14 +83,24 @@ export default function ClientPage() {
 
   return (
     <>
-      {showNewsToast && (
-        <button type="button" className="news-toast" onClick={handleNewsToastClick} aria-label="NEW: 大阪屋台フェス出店決定！">
-          <span className="news-toast-badge">NEW</span>
-          <span className="news-toast-text">
-            <span className="news-toast-copy">大阪屋台フェス出店決定！</span>
-          </span>
-        </button>
-      )}
+      {showNewsToast && (() => {
+        const toastState = getToastState(NEWS_TOAST.startDate, NEWS_TOAST.endDate);
+        const isEnded = toastState === 'ended';
+
+        return (
+          <button
+            type="button"
+            className="news-toast"
+            onClick={handleNewsToastClick}
+            aria-label={isEnded ? `END: ${NEWS_TOAST.endedLabel}` : `NEW: ${NEWS_TOAST.label}`}
+          >
+            <span className="news-toast-badge">{isEnded ? 'END' : 'NEW'}</span>
+            <span className="news-toast-text">
+              <span className="news-toast-copy">{isEnded ? NEWS_TOAST.endedLabel : NEWS_TOAST.label}</span>
+            </span>
+          </button>
+        );
+      })()}
 
       <header>
         <div className="header-inner">
@@ -282,7 +321,7 @@ export default function ClientPage() {
                     <article className="news-item" key={item.id}>
                       <div className="news-meta">
                         <time className="news-date" dateTime={item.date}>{item.label}</time>
-                        <span className="news-category">{item.category}</span>
+                        <span className="news-category">{isNewsEnded ? '終了しました' : item.category}</span>
                       </div>
 
                       <div className="news-content">
