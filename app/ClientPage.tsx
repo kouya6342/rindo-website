@@ -1,14 +1,68 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { SITE_CONFIG, SECTIONS } from './constants';
 import ContactForm from './ContactForm';
 
-const newsItems = [];
+const newsItems = [
+  {
+    id: 'osaka-yatai-fes-2026',
+    date: '2026-08-22',
+    label: '2026.08.22更新',
+    category: '【出店のお知らせ】',
+    title: '# 大阪YATAIフェス2026',
+    summary: 'RINDOがプロデュースするフードブランドが、大阪YATAIフェス2026に出店いたします！',
+    body: [
+      '大阪名物「どて焼き」を現代的なストリートフードとして再構築し、濃厚な牛すじの旨味と麺が絡み合う、ここでしか味わえない唯一無二の一杯をお届けします。',
+      '地域イベントや企業催事、フェスティバルなど、さまざまな場所で出店を行い、多くのお客様にブランドの魅力をお楽しみいただいています。',
+      'この機会に、ぜひ会場へお越しください！',
+    ],
+    overview: {
+      title: '# 大阪YATAIフェス2026 出店概要',
+      items: [
+        ['開催期間', '2026年9月18日（金）～9月23日（水・祝）'],
+        ['営業時間', '11:00～21:00'],
+        ['備考', '9月18日（金）は17:00からの営業となります。\n9月23日（水・祝）は18:00までの営業となります。'],
+        ['会場', '大阪YATAIフェス2026', 'https://maps.app.goo.gl/XW9QATKch7sNEA1YA'],
+      ],
+    },
+  },
+];
 const galleryItems = [];
 
 export default function ClientPage() {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showNewsToast, setShowNewsToast] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setShowNewsToast(false);
+    }, 7000);
+
+    setShowNewsToast(true);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const handleNewsToastClick = () => {
+    setShowNewsToast(false);
+    const newsSection = document.getElementById(SECTIONS.news.id);
+    if (newsSection) {
+      newsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <>
+      {showNewsToast && (
+        <button type="button" className="news-toast" onClick={handleNewsToastClick} aria-label="NEW: 大阪屋台フェス出店決定！">
+          <span className="news-toast-badge">NEW</span>
+          <span className="news-toast-text">
+            <span className="news-toast-copy">大阪屋台フェス出店決定！</span>
+          </span>
+        </button>
+      )}
+
       <header>
         <div className="header-inner">
           <div className="logo">RINDO</div>
@@ -221,15 +275,86 @@ export default function ClientPage() {
             <h2 className="section-title">{SECTIONS.news.label}</h2>
             <div className="news-list">
               {newsItems.length > 0 ? (
-                newsItems.map((item) => (
-                  <article className="news-item" key={item.id}>
-                    <div className="news-meta">
-                      <time className="news-date" dateTime={item.date}>{item.label}</time>
-                      <span className="news-category">{item.category}</span>
-                    </div>
-                    <h3 className="news-title">{item.title}</h3>
-                  </article>
-                ))
+                newsItems.map((item) => {
+                  const isExpanded = expandedId === item.id;
+
+                  return (
+                    <article className="news-item" key={item.id}>
+                      <div className="news-meta">
+                        <time className="news-date" dateTime={item.date}>{item.label}</time>
+                        <span className="news-category">{item.category}</span>
+                      </div>
+
+                      <div className="news-content">
+                        <h3 className="news-title">{item.title}</h3>
+                        <p className="news-summary">{item.summary}</p>
+
+                        <div className="news-detail-toggle">
+                          <button
+                            type="button"
+                            className="news-toggle-button"
+                            aria-expanded={isExpanded}
+                            onClick={() => setExpandedId(isExpanded ? null : item.id)}
+                          >
+                            {isExpanded ? '閉じる' : '詳細'}
+                          </button>
+                        </div>
+
+                        {isExpanded && (
+                          <div className="news-detail">
+                            {item.body.map((paragraph) => (
+                              <p key={paragraph}>{paragraph}</p>
+                            ))}
+
+                            <div className="news-overview">
+                              <h4>{item.overview.title}</h4>
+                              <div className="news-overview-layout">
+                                <dl className="news-overview-list">
+                                  {item.overview.items.map((entry) => {
+                                    const [label, value, mapUrl] = entry as [string, string, string?];
+
+                                    return (
+                                      <div className="news-overview-row" key={label}>
+                                        <dt>{label}</dt>
+                                        <dd>
+                                          {mapUrl ? (
+                                            <a
+                                              href={mapUrl}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="news-map-link"
+                                            >
+                                              {value}
+                                            </a>
+                                          ) : (
+                                            value.split('\n').map((line, index) => (
+                                              <span key={`${label}-${index}`}>
+                                                {index > 0 && <br />}
+                                                {line}
+                                              </span>
+                                            ))
+                                          )}
+                                        </dd>
+                                      </div>
+                                    );
+                                  })}
+                                </dl>
+
+                                <div className="news-overview-image-wrap">
+                                  <img
+                                    src="/fes1.jpg"
+                                    alt="出店のお知らせ # 大阪YATAI（屋台）フェス2026"
+                                    className="news-overview-image"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })
               ) : (
                 <p style={{ color: '#888', textAlign: 'center' }}>現在、新しいお知らせはありません。</p>
               )}

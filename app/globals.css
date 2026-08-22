@@ -377,6 +377,77 @@ header {
 .col-6 { grid-column: span 6; }
 .col-8 { grid-column: span 8; }
 
+.news-toast {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px 12px 12px;
+    min-height: 52px;
+    background: rgba(17, 17, 17, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    color: #fff;
+    cursor: pointer;
+    font-family: "Montserrat", "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    transform: translateX(260px);
+    opacity: 0;
+    animation: toastSlideIn 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) forwards, toastSlideOut 0.42s ease-in 4.6s forwards;
+}
+.news-toast-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    height: 28px;
+    padding: 0 10px;
+    background: #ffea00;
+    color: #111;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+.news-toast-text {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    color: #fff;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+}
+.news-toast-copy {
+    color: #ffffff;
+}
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(260px) rotate(0.8deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) rotate(0deg);
+    }
+}
+@keyframes toastSlideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0) rotate(0deg);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(260px) rotate(-0.8deg);
+    }
+}
+
 /* --- NEWS --- */
 #news {
     border-bottom: 1px solid var(--border-color);
@@ -415,10 +486,106 @@ header {
     color: var(--bg-color);
     text-transform: uppercase;
 }
+.news-content {
+    flex: 1;
+}
 .news-title {
     font-size: 1.15rem;
     font-weight: 700;
-    flex: 1;
+    margin: 0 0 10px;
+}
+.news-summary {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.8;
+}
+.news-detail-toggle {
+    margin-top: 18px;
+}
+.news-toggle-button {
+    appearance: none;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    padding: 10px 18px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.news-toggle-button:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+.news-detail {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    line-height: 1.9;
+}
+.news-detail p {
+    margin: 0 0 16px;
+}
+.news-overview {
+    margin-top: 24px;
+    padding: 20px 22px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+}
+.news-overview h4 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+.news-overview-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 18px;
+    align-items: center;
+}
+.news-overview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+}
+.news-overview-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 16px;
+    align-items: start;
+}
+.news-overview-row dt {
+    font-weight: 700;
+    color: var(--text-color);
+}
+.news-overview-row dd {
+    margin: 0;
+    color: var(--text-muted);
+}
+.news-overview-image-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.news-overview-image {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    max-height: 290px;
+    object-fit: contain;
+    background: rgba(17, 17, 17, 0.6);
+}
+.news-map-link {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.news-map-link:hover {
+    color: #fff;
 }
 
 /* --- ACCESS --- */
