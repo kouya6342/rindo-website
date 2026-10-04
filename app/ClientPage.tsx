@@ -188,7 +188,7 @@ export default function ClientPage() {
                 src={src}
                 alt=""
                 className="hero-slide"
-                style={{ animationDelay: `${index * 5}s` }}
+                style={{ animationDelay: `${index * 10}s` }}
               />
             ))}
           </div>
@@ -381,7 +381,7 @@ export default function ClientPage() {
                   src="/fes1-report.jpg"
                   alt="屋台フェス2026に出店したRINDO FOOD STREETのキッチンカー"
                 />
-                <figcaption>屋台フェス2026に出店したRINDO FOOD STREET</figcaption>
+                <figcaption>屋台フェス2026に出店</figcaption>
               </figure>
             </div>
           </div>
@@ -407,17 +407,18 @@ export default function ClientPage() {
                     >
                       <div className="news-meta">
                         <time className="news-date" dateTime={item.date}>{item.label}</time>
-                        <span className="news-category">
-                          {isNewsEnded && item.id === 'osaka-yatai-fes-2026-announcement' ? '終了しました' : item.category}
+                        <span className={`news-category${item.id === LATEST_NEWS_ID && isLatestNewsNew ? ' new-badge' : ''}`}>
+                          {item.id === LATEST_NEWS_ID && isLatestNewsNew
+                            ? 'NEW'
+                            : isNewsEnded && item.id === 'osaka-yatai-fes-2026-announcement'
+                              ? '終了しました'
+                              : item.category}
                         </span>
                       </div>
 
                       <div className="news-content">
                         <h3 className="news-title">
                           {item.title}
-                          {item.id === LATEST_NEWS_ID && isLatestNewsNew && (
-                            <span className="new-badge">NEW</span>
-                          )}
                         </h3>
                         <p className="news-summary">{item.summary}</p>
 
