@@ -7,6 +7,27 @@ import ContactForm from './ContactForm';
 const newsItems = [
   {
     id: 'osaka-yatai-fes-2026',
+    date: '2026-10-04',
+    label: '2026.10.04更新',
+    category: '【出店レポート】',
+    title: '「屋台フェス2026」に初出店しました！',
+    summary: 'テレビ大阪主催の「屋台フェス2026」に初出店。6日間で約700食の「どて焼きまぜそば」をお届けしました。',
+    body: [
+      '先日開催された、テレビ大阪主催の「屋台フェス2026」に、弊社キッチンカー【RINDO FOOD STREET】が初出店させていただきました。',
+      '暑い中での開催となりましたが、たくさんのお客様にお越しいただき、6日間で約700食の「どて焼きまぜそば」をお召し上がりいただくことができました。',
+      '初めての「屋台フェス」への出店ということで、私たちにとっても大きな挑戦となりましたが、多くのお客様から「美味しい！」という嬉しいお声をいただき、改めて「どて焼きまぜそば」の魅力と、皆様に喜んでいただけることの嬉しさを実感した6日間となりました。',
+      'ご来場いただき、RINDO FOOD STREETの「どて焼きまぜそば」をお選びくださった皆様、本当にありがとうございました。',
+      '今後は、看板商品の「どて焼きまぜそば」に加え、【どて焼き丼】をはじめとした新たな商品も順次開発・展開していく予定です。',
+      'より多くのお客様に「どて焼き」の美味しさを楽しんでいただけるよう、商品ラインナップを充実させ、キッチンカーを通じてさまざまな場所へお届けしてまいります。',
+      'そして、私たちが自信を持ってお届けする【どて焼きまぜそば】を全国へ。',
+      'これからも新しい挑戦を続け、より多くの皆様に愛される商品・ブランドを目指してまいります。',
+      '今後のRINDO FOOD STREETにも、ぜひご期待ください。',
+    ],
+    overview: null,
+    image: null,
+  },
+  {
+    id: 'osaka-yatai-fes-2026-announcement',
     date: '2026-08-22',
     label: '2026.08.22更新',
     category: '【出店のお知らせ】',
@@ -25,15 +46,27 @@ const newsItems = [
         ['会場', '大阪YATAIフェス2026', 'https://maps.app.goo.gl/XW9QATKch7sNEA1YA'],
       ],
     },
+    image: {
+      src: '/fes1.jpg',
+      alt: '大阪YATAIフェス2026の告知ポスター',
+    },
   },
 ];
 const galleryItems = [];
+const heroSlides = [
+  '/food1.jpg',
+  '/fasion2.jpg',
+  '/fasion3.jpg',
+  '/fes1-report.jpg',
+];
 const NEWS_TOAST = {
   startDate: '2026-08-22T00:00:00+09:00',
   endDate: '2026-09-24T00:00:00+09:00',
-  label: '大阪屋台フェス出店決定！',
   endedLabel: '終了しました',
 };
+const LATEST_NEWS_ID = newsItems[0].id;
+const NEW_BADGE_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
+const NEWS_TOAST_DURATION_MS = 8000;
 
 const getCurrentDate = () => {
   return new Date();
@@ -53,13 +86,17 @@ export default function ClientPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showNewsToast, setShowNewsToast] = useState(false);
   const [isNewsEnded, setIsNewsEnded] = useState(false);
+  const [isLatestNewsNew, setIsLatestNewsNew] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const toastState = getToastState(NEWS_TOAST.startDate, NEWS_TOAST.endDate);
-    setIsNewsEnded(toastState === 'ended');
+    setIsNewsEnded(getToastState(NEWS_TOAST.startDate, NEWS_TOAST.endDate) === 'ended');
+    const latestNews = newsItems[0];
+    const publishedAt = new Date(`${latestNews.date}T00:00:00+09:00`).getTime();
+    const isNew = Date.now() >= publishedAt && Date.now() < publishedAt + NEW_BADGE_DURATION_MS;
+    setIsLatestNewsNew(isNew);
 
-    if (toastState === 'upcoming' || toastState === 'ended') {
+    if (!isNew) {
       setShowNewsToast(false);
       return;
     }
@@ -68,13 +105,14 @@ export default function ClientPage() {
 
     const timer = window.setTimeout(() => {
       setShowNewsToast(false);
-    }, 7000);
+    }, NEWS_TOAST_DURATION_MS);
 
     return () => window.clearTimeout(timer);
   }, []);
 
-  const handleNewsToastClick = () => {
+  const handleLatestNewsClick = () => {
     setShowNewsToast(false);
+    setExpandedId(LATEST_NEWS_ID);
     const newsSection = document.getElementById(SECTIONS.news.id);
     if (newsSection) {
       newsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -83,24 +121,22 @@ export default function ClientPage() {
 
   return (
     <>
-      {showNewsToast && (() => {
-        const toastState = getToastState(NEWS_TOAST.startDate, NEWS_TOAST.endDate);
-        const isEnded = toastState === 'ended';
-
-        return (
+      {showNewsToast && isLatestNewsNew && (
+        <aside className="news-toast" role="status" aria-label="新着ニュース">
+          <a className="news-toast-link" href={`#${SECTIONS.news.id}`} onClick={handleLatestNewsClick}>
+            <span className="news-toast-badge">NEW</span>
+            <span className="news-toast-text">{newsItems[0].title}</span>
+          </a>
           <button
             type="button"
-            className="news-toast"
-            onClick={handleNewsToastClick}
-            aria-label={isEnded ? `END: ${NEWS_TOAST.endedLabel}` : `NEW: ${NEWS_TOAST.label}`}
+            className="news-toast-close"
+            aria-label="新着ニュースのお知らせを閉じる"
+            onClick={() => setShowNewsToast(false)}
           >
-            <span className="news-toast-badge">{isEnded ? 'END' : 'NEW'}</span>
-            <span className="news-toast-text">
-              <span className="news-toast-copy">{isEnded ? NEWS_TOAST.endedLabel : NEWS_TOAST.label}</span>
-            </span>
+            ×
           </button>
-        );
-      })()}
+        </aside>
+      )}
 
       <header>
         <div className="header-inner">
@@ -120,8 +156,22 @@ export default function ClientPage() {
           <div className="logo">RINDO</div>
           <nav className={`nav-links${isMobileMenuOpen ? ' is-open' : ''}`} aria-label="グローバルナビゲーション">
             {SITE_CONFIG.navigation.map((item) => (
-              <a key={item.id} href={`#${item.id}`} onClick={() => setIsMobileMenuOpen(false)}>
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={item.id === SECTIONS.news.id && isLatestNewsNew ? 'nav-news-link' : undefined}
+                onClick={(event) => {
+                  setIsMobileMenuOpen(false);
+                  if (item.id === SECTIONS.news.id && isLatestNewsNew) {
+                    event.preventDefault();
+                    handleLatestNewsClick();
+                  }
+                }}
+              >
                 {item.label}
+                {item.id === SECTIONS.news.id && isLatestNewsNew && (
+                  <span className="nav-news-alert" aria-label="新着ニュースあり">!</span>
+                )}
               </a>
             ))}
           </nav>
@@ -131,6 +181,17 @@ export default function ClientPage() {
       <main>
         {/* HERO */}
         <section id="hero">
+          <div className="hero-slideshow" aria-hidden="true">
+            {heroSlides.map((src, index) => (
+              <img
+                key={src}
+                src={src}
+                alt=""
+                className="hero-slide"
+                style={{ animationDelay: `${index * 5}s` }}
+              />
+            ))}
+          </div>
           <div className="hero-content">
             <h1 className="hero-title">{SITE_CONFIG.hero.title}</h1>
             <p className="hero-subtitle">{SITE_CONFIG.hero.subtitle}</p>
@@ -314,10 +375,16 @@ export default function ClientPage() {
         <section id={SECTIONS.gallery.id} className="section-padding">
           <div className="container">
             <h2 className="section-title">{SECTIONS.gallery.label}</h2>
-            <p style={{ color: "#888", textAlign: "center" }}>
-                現在、ギャラリーのコンテンツは準備中です。
-                </p>
-        </div>
+            <div className="gallery-grid">
+              <figure className="gallery-photo col-8">
+                <img
+                  src="/fes1-report.jpg"
+                  alt="屋台フェス2026に出店したRINDO FOOD STREETのキッチンカー"
+                />
+                <figcaption>屋台フェス2026に出店したRINDO FOOD STREET</figcaption>
+              </figure>
+            </div>
+          </div>
         </section>
 
         {/* NEWS */}
@@ -330,14 +397,28 @@ export default function ClientPage() {
                   const isExpanded = expandedId === item.id;
 
                   return (
-                    <article className="news-item" key={item.id}>
+                    <article
+                      className={[
+                        'news-item',
+                        item.id === LATEST_NEWS_ID && isLatestNewsNew ? 'news-item-new' : '',
+                        item.id === 'osaka-yatai-fes-2026-announcement' && isNewsEnded ? 'news-item-ended' : '',
+                      ].filter(Boolean).join(' ')}
+                      key={item.id}
+                    >
                       <div className="news-meta">
                         <time className="news-date" dateTime={item.date}>{item.label}</time>
-                        <span className="news-category">{isNewsEnded ? '終了しました' : item.category}</span>
+                        <span className="news-category">
+                          {isNewsEnded && item.id === 'osaka-yatai-fes-2026-announcement' ? '終了しました' : item.category}
+                        </span>
                       </div>
 
                       <div className="news-content">
-                        <h3 className="news-title">{item.title}</h3>
+                        <h3 className="news-title">
+                          {item.title}
+                          {item.id === LATEST_NEWS_ID && isLatestNewsNew && (
+                            <span className="new-badge">NEW</span>
+                          )}
+                        </h3>
                         <p className="news-summary">{item.summary}</p>
 
                         <div className="news-detail-toggle">
@@ -357,8 +438,9 @@ export default function ClientPage() {
                               <p key={paragraph}>{paragraph}</p>
                             ))}
 
-                            <div className="news-overview">
-                              <div className="news-overview-layout">
+                            {item.overview && (
+                              <div className="news-overview">
+                                <div className={`news-overview-layout${item.image ? '' : ' news-overview-layout-no-image'}`}>
                                 <dl className="news-overview-list">
                                   {item.overview.items.map((entry) => {
                                     const [label, value, mapUrl] = entry as [string, string, string?];
@@ -403,15 +485,18 @@ export default function ClientPage() {
                                   </div>
                                 </dl>
 
-                                <div className="news-overview-image-wrap">
-                                  <img
-                                    src="/fes1.jpg"
-                                    alt="出店のお知らせ # 大阪YATAI（屋台）フェス2026"
-                                    className="news-overview-image"
-                                  />
+                                {item.image && (
+                                  <div className="news-overview-image-wrap">
+                                    <img
+                                      src={item.image.src}
+                                      alt={item.image.alt}
+                                      className="news-overview-image"
+                                    />
+                                  </div>
+                                )}
                                 </div>
                               </div>
-                            </div>
+                            )}
                           </div>
                         )}
                       </div>
